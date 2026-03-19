@@ -104,3 +104,17 @@ Deno.test("NewsSearchData validation test", (): void => {
     );
     assertEquals(japData.isValid(), true);
 });
+
+Deno.test("data-model log test", (): void => {
+    const japData = new NewsSearchData(
+        generateV4UUID(),
+        "ナルト新作", // Tiêu đề tiếng Nhật
+        "https://example.com/thumb.jpg", // Thumbnail hợp lệ
+        null, // Content null
+        new Date(),
+        Language.Japanese,
+        "https://example.com",
+    );
+    japData.logData();
+    assertEquals(japData.isValid(), true);
+});

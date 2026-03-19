@@ -33,4 +33,17 @@ export class NewsSearchData {
         if (!isValidUrl(this.originalUrl)) return false;    // Kiểm tra original url
         return true;    // Trả ra true trong các trường hợp còn lại
     }
+
+    // method log ra giá trị của NewsSearchData (dùng trong phát triển)
+    public logData(): void {
+        console.log(`
+        id: ${this.id}
+            title: ${this.title}
+            thumnail img url: ${this?.thumnailImageUrl}
+            content: ${this?.content}
+            datetime: ${this.datetime.toString()}
+            language: ${this.language.toString()}
+            original url: ${this.originalUrl}\n
+        `);
+    }
 }
