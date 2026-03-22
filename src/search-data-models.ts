@@ -3,15 +3,16 @@ import { Language, isLanguageValue } from "./support-languages.ts";
 import { isValidUrl, isValidStringWithMinLen } from "./helper-funcs.ts";
 
 // Class mẫu cho Data dùng trong tìm kiếm
-export interface Data {
+export interface PageData {
     id: string; // id của data
     url: string;    // url gốc dẫn đến Data này
+
     isValid(): boolean; // Hàm validate kiểu dữ liệu
     logData(): void;    // Hàm log thông tin bên trong của instance
 }
 
 // Class chứa thông tin NewsSearchData
-export class NewsData implements Data {
+export class NewsData implements PageData {
     public id: string;
     public title: string;
     public thumnailImageUrl: string | null;
