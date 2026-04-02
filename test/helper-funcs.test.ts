@@ -1,6 +1,8 @@
 import { assertEquals, assertFalse } from "@std/assert";
-import { isValidStringWithMinLen, validateHTMLString } from "../src/helper-funcs.ts";
+import { isCrawlStatusValue, isValidStringWithMinLen, validateHTMLString } from "../src/helper-funcs.ts";
 import { Language } from "../src/types.ts";
+import { CrawlStatus } from "../src/types.ts";
+import { assert } from "node:console";
 
 Deno.test("isValidStringWithMinLen() test", (): void => {
     // Latin
@@ -89,4 +91,15 @@ Deno.test("validateHTMLString function test", () => {
         </html>
     `;
     assertFalse(validateHTMLString(htmlStrWithNoBodyTag));
+});
+
+Deno.test("isCrawlStatusValue function test", (): void => {
+    const validCrawlStatus: CrawlStatus = CrawlStatus.Crawled;
+    assert(isCrawlStatusValue(validCrawlStatus) === true);
+
+    const numValue = 23;
+    assertFalse(isCrawlStatusValue(numValue));
+
+    const strValue = "some string";
+    assertFalse(isCrawlStatusValue(strValue));
 });

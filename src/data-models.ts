@@ -1,7 +1,7 @@
 import { v4 } from "@std/uuid";
-import { isValidUrl, isValidStringWithMinLen, validateHTMLString } from "./helper-funcs.ts";
+import { isValidUrl, isValidStringWithMinLen, validateHTMLString, isDataTypeValue, isCrawlStatusValue } from "./helper-funcs.ts";
 import { DBData } from "./interfaces.ts";
-import { DataType, isDataTypeValue, MariaDateTime } from "./types.ts";
+import { CrawlStatus, DataType, MariaDateTime } from "./types.ts";
 
 // class thao tác page
 export class Page implements DBData {
@@ -51,7 +51,7 @@ export class MetaData implements DBData {
         if (!v4.validate(this.id)) return false;
         if (!v4.validate(this.pageId)) return false;
         if (!isValidStringWithMinLen(this.title, 2)) return false;  // title cần ít nhất 2 ký tự
-        if (!(this.publicationDate instanceof MariaDateTime)) return false;
+        if (!this.publicationDate.validate()) return false;
         if (!isDataTypeValue(this.dataType)) return false;
         if (!isValidUrl(this.source)) return false; // source cần phải là một url hợp lệ
         return true;
@@ -63,7 +63,7 @@ export class MetaData implements DBData {
         id: ${this.id}
         page id: ${this.pageId}
         title: ${this.title}
-        publication date: ${this.publicationDate.value}
+        publication date: ${this.publicationDate.getValue()}
         data type: ${this.dataType},
         source: ${this.source}\n
         `);
@@ -96,11 +96,12 @@ export class HTMLContent implements DBData {
         id: ${this.id}
         page id: ${this.pageId}
         html data: 
-            ${this.htmlData}
+            ${this.htmlData}\n
         `);
     }
 }
 
+// Image data
 export class Image implements DBData {
     id: string;
     pageId: string;
@@ -132,7 +133,68 @@ export class Image implements DBData {
         page id: ${this.pageId}
         image url: ${this.imageUrl}
         alt text: ${this.altText}
-        source: ${this.source}
+        source: ${this.source}\n
+        `);
+    }
+}
+
+// Page link
+export class PageLinks implements DBData {
+    id: string;
+    pageId: string;
+    toPageId: string | null;
+
+    constructor(id: string, pageId: string, toPageId: string | null) {
+        this.id = id;
+        this.pageId = pageId;
+        this.toPageId = toPageId;
+    }
+
+    // Kiểm tra hợp lệ
+    isValid(): boolean {
+        if (!v4.validate(this.id)) return false;
+        if (!v4.validate(this.pageId)) return false;
+        return true;
+    }
+
+    // log data
+    logData(): void {
+        console.log(`
+        id: ${this.id}
+        page id: ${this.pageId}\n    
+        `);
+    }
+}
+
+// Crawl status
+export class PageStatus implements DBData {
+    id: string;
+    pageId: string;
+    status: CrawlStatus;
+    lastCrawl: MariaDateTime;
+
+    constructor(id: string, pageId: string, status: CrawlStatus, lastCrawl: MariaDateTime) {
+        this.id = id;
+        this.pageId = pageId;
+        this.status = status;
+        this.lastCrawl = lastCrawl;
+    }
+
+    // Kiểm tra hợp lệ
+    isValid(): boolean {
+        if (!v4.validate(this.id)) return false;
+        if (!v4.validate(this.pageId)) return false;
+        if (!isCrawlStatusValue(this.status)) return false;
+        if (!this.lastCrawl.validate()) return false;
+        return true;
+    }
+
+    logData(): void {
+        console.log(`
+        id: ${this.id}
+        page id: ${this.pageId}
+        status: ${this.status.toString()}
+        last crawl: ${this.lastCrawl.getValue()}
         `);
     }
 }

@@ -1,4 +1,6 @@
 import * as cheerio from "cheerio";
+import { eld } from "eld/large";
+import { Language, DataType, CrawlStatus } from "./types.ts";
 
 export function msgLog(msg: string): void {
     console.log(`[${new Date().toString()}] ${msg}`);
@@ -33,4 +35,25 @@ export function validateHTMLString(html: string): boolean {
     const hasBodyTag: boolean = $("body").length > 0;   // Kiểm tra thẻ <body>
     const hasContent: boolean = $("body").text().trim().length > 0; // Kiểm tra thẻ nội dung
     return hasBodyTag && hasContent;
+}
+
+// Hàm nhận diện ngôn ngữ từ string có sẵn
+export function detectLanguage(str: string): Language {
+    const lang: string = eld.detect(str).language;  // lang string đã được eld nhận diện
+    return (Object.values(Language).includes(lang as Language)) ? lang as Language : Language.Unsupported;
+}
+
+// Hàm kiểm tra xem biến bất kỳ có thuộc kiểu Language hay không
+export function isLanguageValue(value: unknown): boolean {
+    return Object.values(Language).includes(value as Language);
+}
+
+// Hàm kiểm tra xem biến bất kỳ có thuộc kiểu DataType hay không
+export function isDataTypeValue(value: unknown): boolean {
+    return Object.values(DataType).includes(value as DataType);
+}
+
+// Hàm kiểm tra xem biến bất kỳ có thuộc kiểu CrawlStatus hay không
+export function isCrawlStatusValue(value: unknown): boolean {
+    return Object.values(CrawlStatus).includes(value as CrawlStatus);
 }
