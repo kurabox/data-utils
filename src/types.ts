@@ -8,7 +8,7 @@ export enum Language {
 
 // Kiểu data của page
 export enum DataType {
-    General,
+    Web,
     News,
     Image,
     Video,
