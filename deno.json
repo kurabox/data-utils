@@ -4,7 +4,6 @@
     "@std/crypto": "jsr:@std/crypto@^1.1.0",
     "@std/uuid": "jsr:@std/uuid@^1.1.0",
     "cheerio": "npm:cheerio@^1.2.0",
-    "eld": "npm:eld@^2.0.2",
-    "mariadb": "npm:mariadb@^3.5.3"
+    "eld": "npm:eld@^2.0.2"
   }
 }

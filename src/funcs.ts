@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { eld } from "eld/large";
-import { Language, PageType, CrawlStatus, PageData } from "./data-types.ts";
+import { Language, PageType, CrawlStatus } from "./data-types.ts";
 import { crypto } from "@std/crypto";
 
 // Kiểm tra tính hợp lệ của url
@@ -51,35 +51,6 @@ export function isPageTypeValue(value: unknown): boolean {
 // Hàm kiểm tra xem biến bất kỳ có thuộc kiểu CrawlStatus hay không
 export function isCrawlStatusValue(value: unknown): boolean {
     return Object.values(CrawlStatus).includes(value as CrawlStatus);
-}
-
-// Hàm kiểm tra tính hợp lệ của Page
-export function validatePageData(pageData: PageData): boolean {
-    return (
-        pageData.page.validate() &&
-        pageData.status.validate() &&
-        pageData.meta.validate() &&
-        pageData.htmlContent.validate() &&
-        pageData.htmlHash.validate()
-        //(pageData.images ?? []).filter((image: Image): boolean => !image.validate()).length === 0
-    );
-}
-
-// Hàm log data cho Page
-export function logPageData(pageData: PageData): void {
-    console.log(`
-    Page Data:
-        id: ${pageData.page.id}
-        url: ${pageData.page.url}
-        title: ${pageData.meta.title}
-        publication timestamp: ${(pageData.meta.publicationTimestamp !== null) ? new Date(Number(pageData.meta.publicationTimestamp)).toDateString() : "No info"}
-        type: ${pageData.meta.pageType.toString()}
-        source: ${pageData.meta.source}
-        created timestamp: ${new Date(Number(pageData.status.createdTimestamp)).toDateString()}
-        update date: ${new Date(Number(pageData.status.updateTimestamp)).toDateString()}
-        language: ${pageData.meta.language}
-        content hash: ${pageData.htmlHash.hashData}
-    `);
 }
 
 // Hàm khởi tạo hash định dạng SHA-256 từ một đoạn string bất kỳ
