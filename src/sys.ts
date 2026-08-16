@@ -18,7 +18,7 @@ export type Log = {
     type: LogType; 
 };
 
-// Hàm log 
+// Hàm sys log 
 export function msgLog(msg: string, logType: LogType): Log {
     const timestamp: number = Date.now();    // Lấy ra thời gian khởi tạo log
     const logStr: string = `[${new Date(timestamp).toString().split(" (")[0]}] ${msg}`;
@@ -29,4 +29,20 @@ export function msgLog(msg: string, logType: LogType): Log {
         content: logStr,
         type: logType,
     };
+}
+
+/**
+ * Hàm lưu log chỉ định vào file
+ * @throws {Error}
+*/
+export async function writeLogFile(logs: Log[], logType: LogType): Promise<void> {
+    // Kiểm tra cài đặt thư mục log trong .env, nếu không thể tìm thấy thì throws error
+    const logDir: string | undefined = Deno.env.get("LOG-DIR");
+    if (logDir === undefined) {
+        throw new Error("Cannot find LOG-DIR path in .env");    // thông báo lỗi khi không thể tìm thấy log-dir trong .env
+    }
+    // Tiến hành ghi file
+    const currentLogFileName: string = `${logType}_${new Date().toDateString().replace(/\s+/g, '_')}.txt`;
+    const logsContent: string = logs.map(log => log.content).join('\n');
+    await Deno.writeTextFile(`${logDir}/${currentLogFileName}`, `${logsContent}\n`, { append: true });
 }
