@@ -16,6 +16,6 @@ Deno.test("writing file test", async (): Promise<void> => {
     assert(logDir !== undefined);
     // Khởi tạo file
     const currentLogFileName: string = `${LogType.CrawlerLog} ${new Date().toDateString()}.txt`;
-    await Deno.writeTextFile(`${logDir}/${currentLogFileName}`, msgLog("Hello222!", LogType.CrawlerLog).content + '\n', { append: true, });
+    await Deno.writeTextFile(`${logDir}/${currentLogFileName}`, msgLog("Hello222!").content + '\n', { append: true, });
     console.log(currentLogFileName);
 });

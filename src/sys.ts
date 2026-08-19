@@ -15,11 +15,10 @@ export type Log = {
     id: string; // v4 uuid
     timestamp: bigint;  // bigint timestamp
     content: string;
-    type: LogType; 
 };
 
 // Hàm sys log 
-export function msgLog(msg: string, logType: LogType): Log {
+export function msgLog(msg: string): Log {
     const timestamp: number = Date.now();    // Lấy ra thời gian khởi tạo log
     const logStr: string = `[${new Date(timestamp).toString().split(" (")[0]}] ${msg}`;
     console.log(logStr);   // Hiển thị log ra console
@@ -27,7 +26,6 @@ export function msgLog(msg: string, logType: LogType): Log {
         id: generateV4UUID(),
         timestamp: BigInt(timestamp),
         content: logStr,
-        type: logType,
     };
 }
 
