@@ -14,7 +14,6 @@ export enum Language {
 export enum PageType {
     Web = "web",
     News = "news",
-    Image = "image",
     Video = "video",
     Product = "product",
 }
